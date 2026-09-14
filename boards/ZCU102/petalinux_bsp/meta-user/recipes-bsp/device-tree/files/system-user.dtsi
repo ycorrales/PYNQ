@@ -1,0 +1,15 @@
+/include/ "system-conf.dtsi"
+/ {
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+		linux,cma {
+			compatible = "shared-dma-pool";
+			reusable;
+			size=<0x0 0x20000000>; // Allocates 512MB
+			alignment = <0x0 0x2000>;
+			linux,cma-default;
+		};
+	};
+};

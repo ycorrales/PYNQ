@@ -481,7 +481,7 @@ endif
 endif
 
 	vivado -version | fgrep ${KERNEL_VERSION}
-	vitis -version | fgrep ${KERNEL_VERSION}
+	#vitis -version | fgrep ${KERNEL_VERSION}
 	which petalinux-config
 	which arm-linux-gnueabihf-gcc
 	which microblaze-xilinx-elf-gcc
