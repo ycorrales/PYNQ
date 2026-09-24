@@ -1,15 +1,23 @@
 /include/ "system-conf.dtsi"
+
 / {
-	reserved-memory {
-		#address-cells = <2>;
-		#size-cells = <2>;
-		ranges;
-		linux,cma {
-			compatible = "shared-dma-pool";
-			reusable;
-			size=<0x0 0x20000000>; // Allocates 512MB
-			alignment = <0x0 0x2000>;
-			linux,cma-default;
-		};
-	};
+    reserved-memory {
+        #address-cells = <2>;
+        #size-cells = <2>;
+        ranges;
+
+        linux,cma {
+            compatible = "shared-dma-pool";
+            reusable;
+
+            /* Allocates 256MB of contiguous space */
+            size = <0x0 0x10000000>; 
+
+            /* The correct, safe 32-bit restriction for ZCU102 PYNQ images */
+            alloc-ranges = <0x0 0x0 0x0 0x7ff00000>;
+
+            alignment = <0x0 0x2000>;
+            linux,cma-default;
+        };
+    };
 };

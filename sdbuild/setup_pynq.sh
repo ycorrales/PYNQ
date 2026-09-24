@@ -3,6 +3,13 @@
 usage() {
   echo "usage: $0 [ZedBoard | ZC706 | ZCU102]"
 }
+
+# 1. Read the first argument, default to ZedBoard if empty
+BOARD_INPUT=${1:-Zedboard}
+
+# 2. Shift the argument away so PetaLinux / other sourced scripts don't see it
+shift $(($# > 0 ? 1 : 0))
+
 source /home/maps/Xilinx/Vivado/2024.1/settings64.sh
 source /home/maps/Xilinx/Vitis/2024.1/settings64.sh
 source /home/maps/Xilinx/petalinux/settings.sh
@@ -10,13 +17,11 @@ source /home/maps/Xilinx/petalinux/settings.sh
 PATH="$(cd -P "$(dirname "$(find /home/maps/Xilinx/Vitis -name 'arm-linux-gnueabihf-gcc')")" && pwd)":$PATH
 export PATH
 
-BOARD=${1:-Zedboard}
-
 THIS_SCRIPT_PATH=$(cd "$(dirname "${BASH_SOURCE[0]:-0}")" &>/dev/null && pwd -P)
 
 # if ZCU102 check bsp is downloaded
 
-if [[ "$BOARD" == "ZCU102" ]]; then
+if [[ "$BOARD_INPUT" == "ZCU102" ]]; then
   # Expand the glob into an array safely
   bsp_files=("$THIS_SCRIPT_PATH/../boards/ZCU102/"*.bsp)
 
@@ -32,4 +37,4 @@ if [[ "$BOARD" == "ZCU102" ]]; then
 fi
 
 sudo make clean
-make BOARDS="$BOARD"
+make BOARDS="$BOARD_INPUT"
